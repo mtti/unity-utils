@@ -15,148 +15,13 @@ limitations under the License.
 */
 
 using System;
-using System.IO;
-using System.Text;
-using System.Reflection;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace mtti.Funcs
 {
-    public static class Utils
+    public static class ReflectionUtils
     {
-        public static string FormatArray(object[] subject)
-        {
-            var sb = new StringBuilder();
-
-            sb.Append("[");
-            for (var i = 0; i < subject.Length; i++)
-            {
-                if (i > 0)
-                {
-                    sb.Append(", ");
-                }
-                sb.Append(subject[i]);
-            }
-            sb.Append("]");
-
-            return sb.ToString();
-        }
-
-        public static string FormatList<T>(List<T> subject)
-        {
-            var sb = new StringBuilder();
-
-            sb.Append("[");
-            for (int i = 0, count = subject.Count; i < count; i++)
-            {
-                if (i > 0)
-                {
-                    sb.Append(", ");
-                }
-                sb.Append(subject[i]);
-            }
-            sb.Append("]");
-
-            return sb.ToString();
-        }
-
-        public static string FormatFileSize(double bytes)
-        {
-            if (bytes < 1000)
-            {
-                return string.Format("{0} bytes", bytes);
-            }
-            else if (bytes < 1000000)
-            {
-                return string.Format("{0} kilobytes", bytes / 1000);
-            }
-            else if (bytes < 1000000000)
-            {
-                return string.Format("{0} megabytes", bytes / 1000000);
-            }
-            else
-            {
-                return string.Format("{0} gigabytes", bytes / 1000000000);
-            }
-        }
-
-        public static string[] SplitPath(string path)
-        {
-            return SplitPath(path, Path.DirectorySeparatorChar);
-        }
-
-        public static string[] SplitPath(string path, char separator)
-        {
-            return path.Split(separator);
-        }
-
-        public static string GetLastPathElement(string path, char separator)
-        {
-            var parts = SplitPath(path, separator);
-            return parts[parts.Length - 1];
-        }
-
-        public static string GetRelativePath(string fromPath, string toPath)
-        {
-            return GetRelativePath(fromPath, toPath, Path.DirectorySeparatorChar);
-        }
-
-        public static string GetRelativePath(
-            string fromPath,
-            string toPath,
-            char separator
-        )
-        {
-            var fromParts = SplitPath(fromPath, separator);
-            var toParts = SplitPath(toPath, separator);
-            var newParts = new List<string>();
-
-            int lastMatchingIndex = -1;
-            for (
-                int i = 0, count = Math.Min(fromParts.Length, toParts.Length);
-                i < count;
-                i++
-            )
-            {
-                if (fromParts[i] == toParts[i])
-                {
-                    lastMatchingIndex = i;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            if (lastMatchingIndex == -1)
-            {
-                return fromPath;
-            }
-
-            int backtrackLevels = fromParts.Length - (lastMatchingIndex + 1);
-
-            for (var i = 0; i < backtrackLevels; i++)
-            {
-                newParts.Add("..");
-            }
-            for (var i = lastMatchingIndex + 1; i < toParts.Length; i++)
-            {
-                newParts.Add(toParts[i]);
-            }
-
-            var sb = new StringBuilder();
-            for (int i = 0, count = newParts.Count; i < count; i++)
-            {
-                if (i > 0)
-                {
-                    sb.Append(separator);
-                }
-                sb.Append(newParts[i]);
-            }
-
-            return sb.ToString();
-        }
-
         /// <summary>
         /// Finds all types in the current application domain which have
         /// a specific attribute.
@@ -293,56 +158,6 @@ namespace mtti.Funcs
                     result.Add(methods[i]);
                 }
             }
-        }
-
-        /// <summary>
-        /// Compare two floating point numbers to see if they're nearly equal.
-        /// </summary>
-        /// <remarks>
-        /// Ported from <a href="http://floating-point-gui.de/errors/comparison/">
-        /// The Floating Point Guide</a>, under CC-BY.
-        /// </remarks>
-        public static bool NearlyEqual(float a, float b, float epsilon)
-        {
-            float difference = Math.Abs(a - b);
-
-            if (a == b)
-            {
-                return true;
-            }
-            else if (a == 0 || b == 0 || difference < Single.MinValue)
-            {
-                return difference < (epsilon * Single.MinValue);
-            }
-            else
-            {
-                return difference / (Math.Abs(a) + Math.Abs(b)) < epsilon;
-            }
-        }
-
-        public static float ReverseLerp(float value, float a, float b)
-        {
-            return (value - a) / (b - a);
-        }
-
-        public static float Lerp(float a, float b, float t)
-        {
-            return ((1.0f - t) * a) + (b * t);
-        }
-
-        public static float Remap(
-            float value,
-            float a1,
-            float b1,
-            float a2,
-            float b2
-        )
-        {
-            return Lerp(
-                a2,
-                b2,
-                ReverseLerp(value, a1, b1)
-            );
         }
     }
 }
