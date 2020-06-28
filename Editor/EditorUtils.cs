@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Text;
 using System.IO;
 using UnityEngine;
+using UnityEditor;
 
 namespace mtti.Funcs.Editor
 {
@@ -131,6 +132,44 @@ namespace mtti.Funcs.Editor
                 sb.Append(resultParts[i]);
             }
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Create a layer in the first available slot, returning the ID of
+        /// the created layer. If a layer by the same name already exists,
+        /// its ID is returned an no new layer is created.
+        /// </summary>
+        public static int CreateLayer(string layerName)
+        {
+            // If a layer by the same name already exists, return its ID
+            for (int i = 0; i < 32; i++)
+            {
+                if (LayerMask.LayerToName(i) == layerName)
+                {
+                    return i;
+                }
+            }
+
+            var tagManager = new SerializedObject(
+                AssetDatabase.LoadAllAssetsAtPath(
+                    "ProjectSettings/TagManager.asset"
+                )[0]
+            );
+            SerializedProperty layers = tagManager.FindProperty("layers");
+
+            for (int i = 8, count = layers.arraySize; i < count; i++)
+            {
+                SerializedProperty layer = layers.GetArrayElementAtIndex(i);
+
+                if (layer.stringValue == "")
+                {
+                    layer.stringValue = layerName;
+                    tagManager.ApplyModifiedProperties();
+                    return i;
+                }
+            }
+
+            throw new Exception("Unable to create new layer because there are no free layers left");
         }
     }
 }
