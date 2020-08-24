@@ -151,6 +151,72 @@ namespace mtti.Funcs
             return count;
         }
 
+        /// <summary>
+        /// Recursively find all components of a certain type in a scene.
+        /// If a GameObject has multiple instances of the same component,
+        /// only one of them is added to the result.
+        /// </summary>
+        public static int FindObjectsInScene<T>(
+            Scene scene,
+            List<T> result
+        ) where T : Component
+        {
+            int c = 0;
+
+            try
+            {
+                scene.GetRootGameObjects(s_gameObjects);
+                for (int i = 0, count = s_gameObjects.Count; i < count; i++)
+                {
+                    var obj = s_gameObjects[i];
+                    var component = obj.GetComponent<T>();
+                    if (component != null)
+                    {
+                        result.Add(component);
+                        c += 1;
+                    }
+                    c += FindChildObjects(obj, result);
+                }
+            }
+            finally
+            {
+                s_gameObjects.Clear();
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// Recursively find components of a certain type in all child objects.
+        /// Similar to
+        /// <see cref="UnityEngine.GameObject.GetComponentsInChildren{T}" />
+        /// but does not allocate garbage and only returns at most one result
+        /// per one GameObject if it as multiple instances of the same
+        /// component.
+        /// </summary>
+        public static int FindChildObjects<T>(
+            GameObject obj,
+            List<T> result
+        ) where T : Component
+        {
+            int c = 0;
+
+            for (int i = 0, count = obj.transform.childCount; i < count; i++)
+            {
+                var child = obj.transform.GetChild(i);
+                var component = child.GetComponent<T>();
+                if (component != null)
+                {
+                    result.Add(component);
+                    c += 1;
+                }
+
+                c += FindChildObjects<T>(child.gameObject, result);
+            }
+
+            return c;
+        }
+
         public static bool IsSceneLoaded(string path)
         {
             for (int i = 0; i < SceneManager.sceneCount; i++)
