@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using System;
 using System.Collections.Generic;
 using IEnumerator = System.Collections.IEnumerator;
 using UnityEngine;
@@ -257,6 +256,18 @@ namespace mtti.Funcs
             else
             {
                 yield return SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Additive);
+            }
+        }
+
+        /// <summary>
+        /// Recursively set the layer of a GameObject and all it's children.
+        /// </summary>
+        public static void SetLayer(GameObject obj, int layer)
+        {
+            obj.layer = layer;
+            for (int i = 0, count = obj.transform.childCount; i < count; i++)
+            {
+                SetLayer(obj.transform.GetChild(i).gameObject, layer);
             }
         }
     }
