@@ -239,6 +239,38 @@ namespace mtti.Funcs
         /// <summary>
         /// Get the middle of a set of points.
         /// </summary>
+        public static Vector3 GetCenter(Vector3[] points)
+        {
+            Vector3 min = new Vector3(Single.MaxValue, Single.MaxValue);
+            Vector3 max = new Vector3(Single.MinValue, Single.MinValue);
+
+            for (int i = 0; i < points.Length; i++)
+            {
+                Vector3 point = points[i];
+                if (point.x < min.x)
+                {
+                    min.x = point.x;
+                }
+                if (point.y < min.y)
+                {
+                    min.y = point.y;
+                }
+                if (point.x > max.x)
+                {
+                    max.x = point.x;
+                }
+                if (point.y > max.y)
+                {
+                    max.y = point.y;
+                }
+            }
+
+            return Vector3.Lerp(min, max, 0.5f);
+        }
+
+        /// <summary>
+        /// Get the middle of a set of points.
+        /// </summary>
         public static Vector3 GetCenter(List<Vector3> points)
         {
             Vector3 min = new Vector3(Single.MaxValue, Single.MaxValue);
