@@ -236,7 +236,6 @@ namespace mtti.Funcs
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene scene = SceneManager.GetSceneAt(i);
-                Debug.Log(scene.path);
                 if (scene.path == prefixedPath)
                 {
                     result = scene;
