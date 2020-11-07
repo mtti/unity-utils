@@ -261,5 +261,17 @@ namespace mtti.Funcs
                 yield return SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Additive);
             }
         }
+
+        /// <summary>
+        /// Recursively set the layer of a GameObject and all it's children.
+        /// </summary>
+        public static void SetLayer(GameObject obj, int layer)
+        {
+            obj.layer = layer;
+            for (int i = 0, count = obj.transform.childCount; i < count; i++)
+            {
+                SetLayer(obj.transform.GetChild(i).gameObject, layer);
+            }
+        }
     }
 }

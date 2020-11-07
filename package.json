@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "displayName": "mtti.Funcs",
   "description": "Small utility functions for Unity",
-  "unity": "2019.3",
+  "unity": "2019.4",
   "author": {
     "name": "Matti Hiltunen",
     "url": "https://www.mattihiltunen.com"
