@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using System;
 using System.Collections.Generic;
 using IEnumerator = System.Collections.IEnumerator;
 using UnityEngine;
@@ -219,10 +218,11 @@ namespace mtti.Funcs
 
         public static bool IsSceneLoaded(string path)
         {
+            string prefixedPath = string.Format("Assets/{0}", path);
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene scene = SceneManager.GetSceneAt(i);
-                if (scene.path == path)
+                if (scene.path == prefixedPath)
                 {
                     return true;
                 }
@@ -232,10 +232,12 @@ namespace mtti.Funcs
 
         public static bool GetLoadedScene(string path, out Scene result)
         {
+            string prefixedPath = string.Format("Assets/{0}", path);
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene scene = SceneManager.GetSceneAt(i);
-                if (scene.path == path)
+                Debug.Log(scene.path);
+                if (scene.path == prefixedPath)
                 {
                     result = scene;
                     return true;
