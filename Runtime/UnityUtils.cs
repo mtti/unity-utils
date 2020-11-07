@@ -218,11 +218,10 @@ namespace mtti.Funcs
 
         public static bool IsSceneLoaded(string path)
         {
-            string prefixedPath = string.Format("Assets/{0}", path);
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene scene = SceneManager.GetSceneAt(i);
-                if (scene.path == prefixedPath)
+                if (scene.path == path)
                 {
                     return true;
                 }
@@ -232,11 +231,10 @@ namespace mtti.Funcs
 
         public static bool GetLoadedScene(string path, out Scene result)
         {
-            string prefixedPath = string.Format("Assets/{0}", path);
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene scene = SceneManager.GetSceneAt(i);
-                if (scene.path == prefixedPath)
+                if (scene.path == path)
                 {
                     result = scene;
                     return true;
