@@ -163,7 +163,7 @@ namespace mtti.Funcs.Gameplay
         {
             _currentLevel = level;
             SceneManager.SetActiveScene(_currentLevel.gameObject.scene);
-            _currentLevel.TriggerLevelLoad();
+            _currentLevel.TriggerLevelLoad(this);
             if (OnLevelLoad != null) OnLevelLoad(level);
         }
 

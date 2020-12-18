@@ -11,12 +11,18 @@ namespace mtti.Funcs.Gameplay
         private static List<MonoBehaviour> s_components
             = new List<MonoBehaviour>();
 
+        private LevelManager _manager;
+
+        public LevelManager Manager { get { return _manager; } }
+
         /// <summary>
         /// Called from <see cref="mtti.Funcs.Gameplay.LevelManager" /> after
         /// the scene containing this GameObject has been loaded.
         /// </summary>
-        internal void TriggerLevelLoad()
+        internal void TriggerLevelLoad(LevelManager manager)
         {
+            _manager = manager;
+
             try
             {
                 GetComponents<MonoBehaviour>(s_components);
