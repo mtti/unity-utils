@@ -15,7 +15,7 @@ Add to `manifest.json`, under `dependencies`:
 ## As an embedded Git submodule
 
 ```
-git submodule add https://github.com/mtti/unity-funcs.git Packages/com.mattihiltunen.funcs
+git submodule add git@github.com:mtti/unity-funcs.git Packages/com.mattihiltunen.funcs
 ```
 
 You can also add the `manifest.json` entry as above to document the dependency to this library.
