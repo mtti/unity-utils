@@ -69,7 +69,9 @@ namespace mtti.Funcs
             return obj.GetComponent<T>();
         }
 
-        public static T EnsureComponent<T>(GameObject gameObject) where T : Component
+        public static T EnsureComponent<T>(
+            this GameObject gameObject
+        ) where T : Component
         {
             T component = gameObject.GetComponent<T>();
             if (component == null)
@@ -79,7 +81,9 @@ namespace mtti.Funcs
             return component;
         }
 
-        public static T EnsureComponent<T>(Component parent) where T : Component
+        public static T EnsureComponent<T>(
+            this Component parent
+        ) where T : Component
         {
             return EnsureComponent<T>(parent.gameObject);
         }
@@ -87,7 +91,9 @@ namespace mtti.Funcs
         /// <summary>
         /// Find an object of a specific type in the root of a scene.
         /// </summary>
-        public static T FindRootObject<T>(Scene scene) where T : Component
+        public static T FindRootObject<T>(
+            this Scene scene
+        ) where T : Component
         {
             try
             {
@@ -255,7 +261,10 @@ namespace mtti.Funcs
             }
             else
             {
-                yield return SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Additive);
+                yield return SceneManager.LoadSceneAsync(
+                    scenePath,
+                    LoadSceneMode.Additive
+                );
             }
         }
 
