@@ -261,7 +261,7 @@ namespace mtti.Funcs
         /// Find all connections between vertices, in both directions, indexed
         /// by source.
         /// </summary>
-        public void FindVertexConnections(Index<int, int> result)
+        public void FindVertexConnections(MultiValueDictionary<int, int> result)
         {
             FindEdges();
             foreach (Vector2Int edge in s_edgeSet)

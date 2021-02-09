@@ -22,7 +22,7 @@ namespace mtti.Funcs.Collections
     /// Like <see cref="System.Collections.Generic.Dictionary{TKey, TValue}" />
     /// but stores a collection of values under each key.
     /// </summary>
-    public class Index<KeyT, ValueT>
+    public class MultiValueDictionary<KeyT, ValueT>
     {
         private Dictionary<KeyT, List<ValueT>> _index
             = new Dictionary<KeyT, List<ValueT>>();
