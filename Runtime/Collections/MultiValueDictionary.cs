@@ -44,6 +44,32 @@ namespace mtti.Funcs.Collections
             return itemCount;
         }
 
+        public ValueT GetFirst(KeyT key)
+        {
+            ValueT result;
+            GetFirst(key, out result);
+            return result;
+        }
+
+        public bool GetFirst(KeyT key, out ValueT result)
+        {
+            if (!_index.ContainsKey(key))
+            {
+                result = default(ValueT);
+                return false;
+            }
+
+            var items = _index[key];
+            if (items.Count == 0)
+            {
+                result = default(ValueT);
+                return false;
+            }
+
+            result = items[0];
+            return true;
+        }
+
         public int Count(KeyT key)
         {
             if (!_index.ContainsKey(key))
