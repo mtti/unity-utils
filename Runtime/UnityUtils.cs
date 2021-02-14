@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 using IEnumerator = System.Collections.IEnumerator;
 using UnityEngine;
@@ -113,6 +114,26 @@ namespace mtti.Funcs
                 s_gameObjects.Clear();
             }
         }
+
+        /// <summary>
+        /// Same as <see cref="mtti.Funcs.UnityUtils.FindRootObject{T}(Scene)" />
+        /// but throw a <see cref="System.InvalidOperationException" /> if
+        /// no object is found.
+        /// </summary>
+        public static T RequireRootObject<T>(
+            this Scene scene
+        ) where T : Component
+        {
+            T result = scene.FindRootObject<T>();
+            if (result == null)
+            {
+                throw new InvalidOperationException(
+                    $"Could not find a root object of type {typeof(T).Name} in scene {scene.name}"
+                );
+            }
+            return result;
+        }
+
 
         /// <summary>
         /// Find a root object of a specific type in any loaded scene.
