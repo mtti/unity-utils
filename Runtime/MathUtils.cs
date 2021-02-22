@@ -63,16 +63,16 @@ namespace mtti.Funcs
 
         public static float Remap(
             float value,
-            float a1,
-            float b1,
-            float a2,
-            float b2
+            float minFrom,
+            float maxFrom,
+            float minTo,
+            float maxTo
         )
         {
             return Lerp(
-                a2,
-                b2,
-                ReverseLerp(value, a1, b1)
+                minTo,
+                maxTo,
+                ReverseLerp(value, minFrom, maxFrom)
             );
         }
 
