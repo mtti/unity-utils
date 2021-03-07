@@ -89,6 +89,25 @@ namespace mtti.Funcs
             return EnsureComponent<T>(parent.gameObject);
         }
 
+        public static T RequireComponentInChildren<T>(
+            this GameObject self
+        ) where T : Component
+        {
+            var result = self.GetComponentInChildren<T>(true);
+            if (result == null)
+            {
+                throw new InvalidOperationException($"No child of {self.name} has the component {typeof(T).Name}");
+            }
+            return result;
+        }
+
+        public static T RequireComponentInChildren<T>(
+            this Component self
+        ) where T : Component
+        {
+            return self.gameObject.RequireComponentInChildren<T>();
+        }
+
         /// <summary>
         /// Find an object of a specific type in the root of a scene.
         /// </summary>
