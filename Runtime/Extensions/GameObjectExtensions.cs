@@ -33,6 +33,22 @@ namespace mtti.Funcs
             return component;
         }
 
+        /// <summary>
+        /// Get a component and throw an exception if the GameObject doesn't
+        /// have one.
+        /// </summary>
+        public static T RequireComponent<T>(
+            this GameObject self
+        ) where T : Component
+        {
+            T component = self.GetComponent<T>();
+            if (component == null)
+            {
+                throw new InvalidOperationException($"GameObject {self.name} has no {typeof(T).Name} component");
+            }
+            return component;
+        }
+
         public static T RequireComponentInChildren<T>(
             this GameObject self
         ) where T : Component

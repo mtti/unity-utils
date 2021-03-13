@@ -27,6 +27,13 @@ namespace mtti.Funcs
             return self.gameObject.EnsureComponent<T>();
         }
 
+        public static T RequireComponent<T>(
+            this Component self
+        ) where T : Component
+        {
+            return self.gameObject.RequireComponent<T>();
+        }
+
         public static T RequireComponentInChildren<T>(
             this Component self
         ) where T : Component
