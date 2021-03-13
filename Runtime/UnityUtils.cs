@@ -70,90 +70,6 @@ namespace mtti.Funcs
             return obj.GetComponent<T>();
         }
 
-        public static T EnsureComponent<T>(
-            this GameObject gameObject
-        ) where T : Component
-        {
-            T component = gameObject.GetComponent<T>();
-            if (component == null)
-            {
-                component = gameObject.AddComponent<T>();
-            }
-            return component;
-        }
-
-        public static T EnsureComponent<T>(
-            this Component parent
-        ) where T : Component
-        {
-            return EnsureComponent<T>(parent.gameObject);
-        }
-
-        public static T RequireComponentInChildren<T>(
-            this GameObject self
-        ) where T : Component
-        {
-            var result = self.GetComponentInChildren<T>(true);
-            if (result == null)
-            {
-                throw new InvalidOperationException($"No child of {self.name} has the component {typeof(T).Name}");
-            }
-            return result;
-        }
-
-        public static T RequireComponentInChildren<T>(
-            this Component self
-        ) where T : Component
-        {
-            return self.gameObject.RequireComponentInChildren<T>();
-        }
-
-        /// <summary>
-        /// Find an object of a specific type in the root of a scene.
-        /// </summary>
-        public static T FindRootObject<T>(
-            this Scene scene
-        ) where T : Component
-        {
-            try
-            {
-                scene.GetRootGameObjects(s_gameObjects);
-                for (int i = 0, count = s_gameObjects.Count; i < count; i++)
-                {
-                    T result = s_gameObjects[i].GetComponent<T>();
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                }
-                return null;
-            }
-            finally
-            {
-                s_gameObjects.Clear();
-            }
-        }
-
-        /// <summary>
-        /// Same as <see cref="mtti.Funcs.UnityUtils.FindRootObject{T}(Scene)" />
-        /// but throw a <see cref="System.InvalidOperationException" /> if
-        /// no object is found.
-        /// </summary>
-        public static T RequireRootObject<T>(
-            this Scene scene
-        ) where T : Component
-        {
-            T result = scene.FindRootObject<T>();
-            if (result == null)
-            {
-                throw new InvalidOperationException(
-                    $"Could not find a root object of type {typeof(T).Name} in scene {scene.name}"
-                );
-            }
-            return result;
-        }
-
-
         /// <summary>
         /// Find a root object of a specific type in any loaded scene.
         /// </summary>
@@ -162,7 +78,7 @@ namespace mtti.Funcs
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene scene = SceneManager.GetSceneAt(i);
-                T obj = FindRootObject<T>(scene);
+                T obj = scene.FindRootObject<T>();
                 if (obj != null)
                 {
                     return obj;
@@ -180,7 +96,7 @@ namespace mtti.Funcs
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene scene = SceneManager.GetSceneAt(i);
-                T obj = FindRootObject<T>(scene);
+                T obj = scene.FindRootObject<T>();
                 if (obj == null)
                 {
                     continue;

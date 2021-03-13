@@ -118,7 +118,7 @@ namespace mtti.Funcs.Gameplay
                 yield break;
             }
 
-            var level = UnityUtils.FindRootObject<Level>(scene);
+            var level = scene.FindRootObject<Level>();
             if (level == null)
             {
                 Debug.LogErrorFormat(
