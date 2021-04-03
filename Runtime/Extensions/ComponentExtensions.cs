@@ -40,5 +40,13 @@ namespace mtti.Funcs
         {
             return self.gameObject.RequireComponentInChildren<T>();
         }
+
+        /// <summary>
+        /// Recursively set the layer of a GameObject and all it's children.
+        /// </summary>
+        public static void SetLayerRecursively(this Component self, int layer)
+        {
+            self.gameObject.SetLayerRecursively(layer);
+        }
     }
 }

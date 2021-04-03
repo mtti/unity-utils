@@ -60,5 +60,17 @@ namespace mtti.Funcs
             }
             return result;
         }
+
+        /// <summary>
+        /// Recursively set the layer of a GameObject and all it's children.
+        /// </summary>
+        public static void SetLayerRecursively(this GameObject self, int layer)
+        {
+            self.layer = layer;
+            for (int i = 0, count = self.transform.childCount; i < count; i++)
+            {
+                SetLayerRecursively(self.transform.GetChild(i).gameObject, layer);
+            }
+        }
     }
 }
