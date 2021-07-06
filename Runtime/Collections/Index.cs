@@ -20,22 +20,22 @@ using System.Collections.Generic;
 namespace mtti.Funcs.Collections
 {
     /// <summary>
-    /// Two-way mapping of <c>ulong</c>s and strings.
+    /// Two-way mapping of <c>ulong</c>s to values.
     /// </summary>
-    public class StringIndex : IEnumerable<KeyValuePair<ulong, string>>
+    public class Index<T> : IEnumerable<KeyValuePair<ulong, T>> where T : struct
     {
         private ulong _nextKey = 1;
 
-        private Dictionary<ulong, string> _itemsByKey
-            = new Dictionary<ulong, string>();
+        private Dictionary<ulong, T> _itemsByKey
+            = new Dictionary<ulong, T>();
 
-        private Dictionary<string, ulong> _itemsByValue
-            = new Dictionary<string, ulong>();
+        private Dictionary<T, ulong> _itemsByValue
+            = new Dictionary<T, ulong>();
 
         /// <summary>
         /// Get or a set a value by key.
         /// </summary>
-        public string this[ulong key]
+        public T this[ulong key]
         {
             get
             {
@@ -46,9 +46,7 @@ namespace mtti.Funcs.Collections
             {
                 if (_itemsByValue.ContainsKey(value))
                 {
-                    throw new ArgumentException(
-                        $"Index already contains the value {value}"
-                    );
+                    throw new ArgumentException($"Value already indexed");
                 }
 
                 Remove(key);
@@ -62,7 +60,7 @@ namespace mtti.Funcs.Collections
         /// <summary>
         /// Get the key corresponding to a value.
         /// </summary>
-        public ulong this[string val]
+        public ulong this[T val]
         {
             get
             {
@@ -78,7 +76,7 @@ namespace mtti.Funcs.Collections
         /// <summary>
         /// Add a new value to the index and return the key it was assigned.
         /// </summary>
-        public ulong Add(string value)
+        public ulong Add(T value)
         {
             if (_itemsByValue.ContainsKey(value)) return _itemsByValue[value];
 
@@ -105,7 +103,7 @@ namespace mtti.Funcs.Collections
         /// <summary>
         /// Remove an item by value.
         /// </summary>
-        public bool Remove(string value)
+        public bool Remove(T value)
         {
             if (!_itemsByValue.ContainsKey(value)) return false;
             var key = _itemsByValue[value];
@@ -120,7 +118,7 @@ namespace mtti.Funcs.Collections
             return _itemsByKey.ContainsKey(key);
         }
 
-        public bool ContainsValue(string value)
+        public bool ContainsValue(T value)
         {
             return _itemsByValue.ContainsKey(value);
         }
@@ -130,7 +128,7 @@ namespace mtti.Funcs.Collections
             return _itemsByKey.GetEnumerator();
         }
 
-        IEnumerator<KeyValuePair<ulong, string>> IEnumerable<KeyValuePair<ulong, string>>.GetEnumerator()
+        IEnumerator<KeyValuePair<ulong, T>> IEnumerable<KeyValuePair<ulong, T>>.GetEnumerator()
         {
             return _itemsByKey.GetEnumerator();
         }
