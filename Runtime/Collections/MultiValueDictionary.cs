@@ -110,6 +110,12 @@ namespace mtti.Funcs.Collections
             _index[key].Remove(value);
         }
 
+        public void Remove(KeyT key)
+        {
+            if (!_index.ContainsKey(key)) return;
+            _index[key].Clear();
+        }
+
         public void Clear()
         {
             foreach (KeyValuePair<KeyT, List<ValueT>> pair in _index)
