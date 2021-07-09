@@ -18,13 +18,13 @@ using System.Collections.Generic;
 
 namespace mtti.Funcs.Collections
 {
-    public class SparseList<T> : IEnumerable<KeyValuePair<ulong, T>>
+    public class SparseList<T> : IEnumerable<KeyValuePair<int, T>>
     {
-        private ulong _nextKey;
+        private int _nextKey;
 
-        private Dictionary<ulong, T> _items = new Dictionary<ulong, T>();
+        private Dictionary<int, T> _items = new Dictionary<int, T>();
 
-        public T this[uint key]
+        public T this[int key]
         {
             get
             {
@@ -38,19 +38,19 @@ namespace mtti.Funcs.Collections
             }
         }
 
-        public ulong Add(T item)
+        public int Add(T item)
         {
             var key = _nextKey++;
             _items[key] = item;
             return key;
         }
 
-        public void Remove(ulong key)
+        public void Remove(int key)
         {
             _items.Remove(key);
         }
 
-        public bool ContainsKey(ulong key)
+        public bool ContainsKey(int key)
         {
             return _items.ContainsKey(key);
         }
@@ -60,7 +60,7 @@ namespace mtti.Funcs.Collections
             return _items.GetEnumerator();
         }
 
-        IEnumerator<KeyValuePair<ulong, T>> IEnumerable<KeyValuePair<ulong, T>>.GetEnumerator()
+        IEnumerator<KeyValuePair<int, T>> IEnumerable<KeyValuePair<int, T>>.GetEnumerator()
         {
             return _items.GetEnumerator();
         }

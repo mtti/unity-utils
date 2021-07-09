@@ -20,22 +20,22 @@ using System.Collections.Generic;
 namespace mtti.Funcs.Collections
 {
     /// <summary>
-    /// Two-way mapping of <c>ulong</c>s to values.
+    /// Two-way mapping of <c>int</c>s to values.
     /// </summary>
-    public class Index<T> : IEnumerable<KeyValuePair<ulong, T>> where T : struct
+    public class Index<T> : IEnumerable<KeyValuePair<int, T>> where T : struct
     {
-        private ulong _nextKey = 1;
+        private int _nextKey = 1;
 
-        private Dictionary<ulong, T> _itemsByKey
-            = new Dictionary<ulong, T>();
+        private Dictionary<int, T> _itemsByKey
+            = new Dictionary<int, T>();
 
-        private Dictionary<T, ulong> _itemsByValue
-            = new Dictionary<T, ulong>();
+        private Dictionary<T, int> _itemsByValue
+            = new Dictionary<T, int>();
 
         /// <summary>
         /// Get or a set a value by key.
         /// </summary>
-        public T this[ulong key]
+        public T this[int key]
         {
             get
             {
@@ -60,7 +60,7 @@ namespace mtti.Funcs.Collections
         /// <summary>
         /// Get the key corresponding to a value.
         /// </summary>
-        public ulong this[T val]
+        public int this[T val]
         {
             get
             {
@@ -76,7 +76,7 @@ namespace mtti.Funcs.Collections
         /// <summary>
         /// Add a new value to the index and return the key it was assigned.
         /// </summary>
-        public ulong Add(T value)
+        public int Add(T value)
         {
             if (_itemsByValue.ContainsKey(value)) return _itemsByValue[value];
 
@@ -89,7 +89,7 @@ namespace mtti.Funcs.Collections
         /// <summary>
         /// Remove an item by key.
         /// </summary>
-        public bool Remove(ulong key)
+        public bool Remove(int key)
         {
             if (!_itemsByKey.ContainsKey(key)) return false;
 
@@ -113,7 +113,7 @@ namespace mtti.Funcs.Collections
             return true;
         }
 
-        public bool ContainsKey(ulong key)
+        public bool ContainsKey(int key)
         {
             return _itemsByKey.ContainsKey(key);
         }
@@ -128,7 +128,7 @@ namespace mtti.Funcs.Collections
             return _itemsByKey.GetEnumerator();
         }
 
-        IEnumerator<KeyValuePair<ulong, T>> IEnumerable<KeyValuePair<ulong, T>>.GetEnumerator()
+        IEnumerator<KeyValuePair<int, T>> IEnumerable<KeyValuePair<int, T>>.GetEnumerator()
         {
             return _itemsByKey.GetEnumerator();
         }
