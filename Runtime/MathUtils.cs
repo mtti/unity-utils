@@ -79,6 +79,24 @@ namespace mtti.Funcs
         /// <summary>
         /// Convert a flat array index to a 3D array position.
         /// </summary>
+        public static void FromIndex(
+            int index,
+            int width,
+            int height,
+            out int x,
+            out int y,
+            out int z
+        )
+        {
+            z = index / (width * height);
+            index = index - (width * height * z);
+            x = index % width;
+            y = index / width;
+        }
+
+        /// <summary>
+        /// Convert a flat array index to a 3D array position.
+        /// </summary>
         public static Vector3Int FromIndex(int index, int width, int height)
         {
             int z = index / (width * height);
