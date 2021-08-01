@@ -27,7 +27,7 @@ namespace mtti.Funcs.Collections
         private Dictionary<KeyT, List<ValueT>> _index
             = new Dictionary<KeyT, List<ValueT>>();
 
-        public int Get(KeyT key, List<ValueT> result)
+        public int Get(KeyT key, ICollection<ValueT> result)
         {
             if (!_index.ContainsKey(key))
             {
@@ -123,7 +123,7 @@ namespace mtti.Funcs.Collections
             _index[key].Clear();
         }
 
-        public int GetAll(List<ValueT> result)
+        public int GetAll(ICollection<ValueT> result)
         {
             int resultCount = 0;
             foreach (var item in _index)
