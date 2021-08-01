@@ -44,6 +44,13 @@ namespace mtti.Funcs.Collections
             return itemCount;
         }
 
+        public List<ValueT> Get(KeyT key)
+        {
+            var result = new List<ValueT>();
+            Get(key, result);
+            return result;
+        }
+
         public ValueT GetFirst(KeyT key)
         {
             ValueT result;
@@ -114,6 +121,28 @@ namespace mtti.Funcs.Collections
         {
             if (!_index.ContainsKey(key)) return;
             _index[key].Clear();
+        }
+
+        public int GetAll(List<ValueT> result)
+        {
+            int resultCount = 0;
+            foreach (var item in _index)
+            {
+                var values = item.Value;
+                for (int i = 0, count = values.Count; i < count; i++)
+                {
+                    result.Add(values[i]);
+                    resultCount += 1;
+                }
+            }
+            return resultCount;
+        }
+
+        public List<ValueT> GetAll()
+        {
+            var result = new List<ValueT>();
+            GetAll(result);
+            return result;
         }
 
         public void Clear()
