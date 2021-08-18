@@ -1,4 +1,7 @@
 /*
+© Published at floating-point-gui.de under the Creative Commons Attribution
+License (BY)
+
 Copyright 2017-2021 Matti Hiltunen
 
 Licensed under the Apache License, Version 2.0 (the "License");
