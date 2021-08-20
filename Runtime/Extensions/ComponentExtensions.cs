@@ -27,6 +27,28 @@ namespace mtti.Funcs
             return self.gameObject.EnsureComponent<T>();
         }
 
+        /// <summary>
+        /// Find a child GameObject by name.
+        /// </summary>
+        public static GameObject FindChildByName(
+            this Component self,
+            string name
+        )
+        {
+            return self.gameObject.FindChildByName(name);
+        }
+
+        /// <summary>
+        /// Find a child GameObject by name.
+        /// </summary>
+        public static T FindChildByName<T>(
+            this Component self,
+            string name
+        ) where T : Component
+        {
+            return self.gameObject.FindChildByName<T>(name);
+        }
+
         public static T RequireComponent<T>(
             this Component self
         ) where T : Component

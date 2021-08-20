@@ -34,6 +34,39 @@ namespace mtti.Funcs
         }
 
         /// <summary>
+        /// Find a child GameObject by name.
+        /// </summary>
+        public static GameObject FindChildByName(
+            this GameObject self,
+            string name
+        )
+        {
+            if (self.name == name) return self;
+
+            var transform = self.GetComponent<Transform>();
+            for (int i = 0, count = transform.childCount; i < count; i++)
+            {
+                var result = transform.GetChild(i).FindChildByName(name);
+                if (result != null) return result.gameObject;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Find a child GameObject by name.
+        /// </summary>
+        public static T FindChildByName<T>(
+            this GameObject self,
+            string name
+        ) where T : Component
+        {
+            var obj = self.FindChildByName(name);
+            if (obj == null) return null;
+            return obj.GetComponent<T>();
+        }
+
+        /// <summary>
         /// Get a component and throw an exception if the GameObject doesn't
         /// have one.
         /// </summary>
