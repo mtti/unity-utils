@@ -24,12 +24,22 @@ namespace mtti.Funcs.Editor
         /// <summary>
         /// Create a bold subheading when called in a custom inspector.
         /// </summary>
-        public static void BoldSubheading(string text)
+        public static void CenteredHeading(string text)
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             GUILayout.Label(text, EditorStyles.boldLabel);
             GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
+        }
+
+        /// <summary>
+        /// Create a bold subheading when called in a custom inspector.
+        /// </summary>
+        public static void Heading(string text)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(text, EditorStyles.boldLabel);
             EditorGUILayout.EndHorizontal();
         }
     }
