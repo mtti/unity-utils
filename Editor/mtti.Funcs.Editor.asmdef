@@ -1,6 +1,9 @@
 {
     "name": "mtti.Funcs.Editor",
-    "references": [],
+    "rootNamespace": "",
+    "references": [
+        "GUID:dc3d1ea4019e50645b2ecd014251843f"
+    ],
     "includePlatforms": [
         "Editor"
     ],
