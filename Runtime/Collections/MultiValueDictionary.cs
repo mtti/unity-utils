@@ -1,5 +1,5 @@
 /*
-Copyright 2017-2020 Matti Hiltunen
+Copyright 2017-2021 Matti Hiltunen
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,8 +22,83 @@ namespace mtti.Funcs.Collections
     /// Like <see cref="System.Collections.Generic.Dictionary{TKey, TValue}" />
     /// but stores a collection of values under each key.
     /// </summary>
-    public class MultiValueDictionary<KeyT, ValueT>
+    public class MultiValueDictionary<KeyT, ValueT> :
+        IEnumerable<KeyValuePair<KeyT, ValueT>>
     {
+        public class Enumerator : IEnumerator<KeyValuePair<KeyT, ValueT>>
+        {
+            private Dictionary<KeyT, List<ValueT>> _collection;
+
+            private IEnumerator<KeyValuePair<KeyT, List<ValueT>>> _keyEnumerator;
+
+            private KeyT _currentKey;
+
+            private IEnumerator<ValueT> _valueEnumerator;
+
+            public Enumerator(Dictionary<KeyT, List<ValueT>> collection)
+            {
+                _collection = collection;
+                _keyEnumerator = _collection.GetEnumerator();
+            }
+
+            KeyValuePair<KeyT, ValueT> IEnumerator<KeyValuePair<KeyT, ValueT>>.Current
+            {
+                get
+                {
+                    return new KeyValuePair<KeyT, ValueT>(
+                        _keyEnumerator.Current.Key,
+                        _valueEnumerator.Current
+                    );
+                }
+            }
+
+            object System.Collections.IEnumerator.Current
+            {
+                get
+                {
+                    return ((IEnumerator<KeyValuePair<KeyT, ValueT>>)this).Current;
+                }
+            }
+
+            public bool MoveNext()
+            {
+                while (true)
+                {
+                    if (_valueEnumerator == null || !_valueEnumerator.MoveNext())
+                    {
+                        if (_valueEnumerator != null) _valueEnumerator.Dispose();
+                        if (!_keyEnumerator.MoveNext())
+                        {
+                            _keyEnumerator.Dispose();
+                            return false;
+                        }
+
+                        _valueEnumerator
+                            = _keyEnumerator.Current.Value.GetEnumerator();
+                        continue;
+                    }
+
+                    return true;
+                }
+
+            }
+
+            public void Reset()
+            {
+                if (_valueEnumerator != null) _valueEnumerator.Dispose();
+                _valueEnumerator = null;
+                _keyEnumerator.Reset();
+            }
+
+            public void Dispose()
+            {
+                if (_valueEnumerator != null) _valueEnumerator.Dispose();
+                if (_keyEnumerator != null) _keyEnumerator.Dispose();
+                _valueEnumerator = null;
+                _keyEnumerator = null;
+            }
+        }
+
         private Dictionary<KeyT, List<ValueT>> _index
             = new Dictionary<KeyT, List<ValueT>>();
 
@@ -152,6 +227,16 @@ namespace mtti.Funcs.Collections
                 pair.Value.Clear();
             }
             _index.Clear();
+        }
+
+        IEnumerator<KeyValuePair<KeyT, ValueT>> IEnumerable<KeyValuePair<KeyT, ValueT>>.GetEnumerator()
+        {
+            return new Enumerator(_index);
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<KeyValuePair<KeyT, ValueT>>)this).GetEnumerator();
         }
     }
 }
