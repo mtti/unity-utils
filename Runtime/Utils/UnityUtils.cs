@@ -71,6 +71,33 @@ namespace mtti.Funcs
         }
 
         /// <summary>
+        /// Recursively find all GameObjects by name.
+        /// </summary>
+        public static void FindAllGameObjects(
+            string name,
+            List<GameObject> result
+        )
+        {
+            int total = 0;
+
+            for (int scene_i = 0; scene_i < SceneManager.sceneCount; scene_i++)
+            {
+                var scene = SceneManager.GetSceneAt(scene_i);
+                var rootObjects = scene.GetRootGameObjects();
+                for (var root_i = 0; root_i < rootObjects.Length; root_i++)
+                {
+                    var obj = rootObjects[root_i];
+                    total += obj.FindChildObjects(name, result);
+                    if (obj.name == name)
+                    {
+                        result.Add(obj);
+                        total++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Find a root object of a specific type in any loaded scene.
         /// </summary>
         public static T FindRootObject<T>() where T : Component
@@ -176,6 +203,28 @@ namespace mtti.Funcs
             }
 
             return c;
+        }
+
+        public static int FindChildObjects(
+            this GameObject self,
+            string name,
+            List<GameObject> result
+        )
+        {
+            int total = 0;
+
+            for (int i = 0, count = self.transform.childCount; i < count; i++)
+            {
+                var child = self.transform.GetChild(i);
+                total += child.gameObject.FindChildObjects(name, result);
+                if (child.gameObject.name == name)
+                {
+                    result.Add(child.gameObject);
+                    total++;
+                }
+            }
+
+            return total;
         }
 
         public static bool IsSceneLoaded(string path)
