@@ -85,6 +85,15 @@ namespace mtti.Funcs
             _value = value;
         }
 
+        /// <summary>
+        /// Get the value if one exists, falling back to a default if not.
+        /// </summary>
+        public T GetValue(T defaultValue)
+        {
+            if (_hasValue) return _value;
+            return defaultValue;
+        }
+
         public bool TryGetValue(out T value)
         {
             if (_hasValue)
