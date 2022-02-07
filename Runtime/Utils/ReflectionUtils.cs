@@ -1,5 +1,5 @@
 /*
-Copyright 2017-2020 Matti Hiltunen
+Copyright 2017-2022 Matti Hiltunen
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,6 +20,9 @@ using System.Reflection;
 
 namespace mtti.Funcs
 {
+    /// <summary>
+    /// Helper functions related to reflection.
+    /// </summary>
     public static class ReflectionUtils
     {
         /// <summary>
@@ -101,6 +104,56 @@ namespace mtti.Funcs
                 {
                     result.Add(methods[i]);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Get all properties in a type which have a specific attribute.
+        /// </summary>
+        public static void GetPropertiesWithAttribute(
+            Type targetType,
+            Type attributeType,
+            List<PropertyInfo> result
+        )
+        {
+            var properties = targetType.GetProperties(
+                BindingFlags.Instance
+                | BindingFlags.Public
+                | BindingFlags.NonPublic
+            );
+            for (int i = 0; i < properties.Length; i++)
+            {
+                var attribute = Attribute.GetCustomAttribute(
+                    properties[i],
+                    attributeType,
+                    true
+                );
+                if (attribute != null) result.Add(properties[i]);
+            }
+        }
+
+        /// <summary>
+        /// Get all fields in a type which have a specific attribute.
+        /// </summary>
+        public static void GetFieldsWithAttribute(
+            Type targetType,
+            Type attributeType,
+            List<FieldInfo> result
+        )
+        {
+            var fields = targetType.GetFields(
+                BindingFlags.Instance |
+                BindingFlags.Public |
+                BindingFlags.NonPublic
+            );
+            for (int i = 0; i < fields.Length; i++)
+            {
+                var attribute = Attribute.GetCustomAttribute(
+                    fields[i],
+                    attributeType,
+                    true
+                );
+                if (attribute != null) result.Add(fields[i]);
             }
         }
 
