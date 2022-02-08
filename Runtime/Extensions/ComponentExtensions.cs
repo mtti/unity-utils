@@ -49,6 +49,14 @@ namespace mtti.Funcs
             return self.gameObject.FindChildByName<T>(name);
         }
 
+        public static T RequireChildByName<T>(
+            this Component self,
+            string name
+        ) where T : Component
+        {
+            return self.gameObject.RequireChildByName<T>(name);
+        }
+
         public static T RequireComponent<T>(
             this Component self
         ) where T : Component

@@ -54,7 +54,7 @@ namespace mtti.Funcs
         }
 
         /// <summary>
-        /// Find a child GameObject by name.
+        /// Find a component of a child by the child GameObject's name.
         /// </summary>
         public static T FindChildByName<T>(
             this GameObject self,
@@ -64,6 +64,23 @@ namespace mtti.Funcs
             var obj = self.FindChildByName(name);
             if (obj == null) return null;
             return obj.GetComponent<T>();
+        }
+
+        /// <summary>
+        /// Find a component of a child by the child GameObject's name, or
+        /// throw an exception if not found.
+        /// </summary>
+        public static T RequireChildByName<T>(
+            this GameObject self,
+            string name
+        ) where T : Component
+        {
+            var result = self.FindChildByName<T>(name);
+            if (result == null)
+            {
+                throw new InvalidOperationException($"GameObject {self.name} has no child called {name} with the type {typeof(T).Name}");
+            }
+            return result;
         }
 
         /// <summary>
