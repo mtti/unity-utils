@@ -106,6 +106,12 @@ namespace mtti.Funcs
             return false;
         }
 
+        public override string ToString()
+        {
+            if (HasValue) return Value.ToString();
+            return "";
+        }
+
         public override bool Equals(object obj)
         {
             if (!(obj is NullableValue<T>))
@@ -123,7 +129,7 @@ namespace mtti.Funcs
             return _value.GetHashCode();
         }
 
-        bool IEquatable<NullableValue<T>>.Equals(NullableValue<T> other)
+        public bool Equals(NullableValue<T> other)
         {
             if (!_hasValue && !other._hasValue) return true;
             if (_hasValue != other._hasValue) return false;
