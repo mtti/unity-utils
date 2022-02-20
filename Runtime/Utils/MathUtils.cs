@@ -1,5 +1,5 @@
 /*
-Copyright 2017-2020 Matti Hiltunen
+Copyright 2017-2022 Matti Hiltunen
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@ limitations under the License.
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if USE_UNITY_MATHEMATICS
+using Unity.Mathematics;
+#endif
 
 namespace mtti.Funcs
 {
@@ -115,6 +119,18 @@ namespace mtti.Funcs
             int y = index / width;
             return new Vector2Int(x, y);
         }
+
+#if USE_UNITY_MATHEMATICS
+        /// <summary>
+        /// Convert a flat array index to a 2D array position.
+        /// </summary>
+        public static int2 FromIndexNative(int index, int width)
+        {
+            int x = index % width;
+            int y = index / width;
+            return new int2(x, y);
+        }
+#endif
 
         public static int ToIndex(int x, int y, int z, int width, int height)
         {
