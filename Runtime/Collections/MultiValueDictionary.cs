@@ -102,6 +102,11 @@ namespace mtti.Funcs.Collections
         private Dictionary<KeyT, List<ValueT>> _index
             = new Dictionary<KeyT, List<ValueT>>();
 
+        public Dictionary<KeyT, List<ValueT>>.KeyCollection Keys
+        {
+            get { return _index.Keys; }
+        }
+
         public int Get(KeyT key, ICollection<ValueT> result)
         {
             if (!_index.ContainsKey(key))
@@ -152,6 +157,32 @@ namespace mtti.Funcs.Collections
             return true;
         }
 
+        public ValueT GetLast(KeyT key)
+        {
+            ValueT result;
+            GetLast(key, out result);
+            return result;
+        }
+
+        public bool GetLast(KeyT key, out ValueT result)
+        {
+            if (!_index.ContainsKey(key))
+            {
+                result = default(ValueT);
+                return false;
+            }
+
+            var items = _index[key];
+            if (items.Count == 0)
+            {
+                result = default(ValueT);
+                return false;
+            }
+
+            result = items[items.Count - 1];
+            return true;
+        }
+
         public int Count(KeyT key)
         {
             if (!_index.ContainsKey(key))
@@ -196,6 +227,13 @@ namespace mtti.Funcs.Collections
         {
             if (!_index.ContainsKey(key)) return;
             _index[key].Clear();
+            // To avoid GC, there's intentionally no _index.Remove(key) here
+        }
+
+        public void RemoveAt(KeyT key, int index)
+        {
+            if (!_index.ContainsKey(key)) return;
+            _index[key].RemoveAt(index);
         }
 
         public int GetAll(ICollection<ValueT> result)
