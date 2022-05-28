@@ -25,15 +25,36 @@ namespace mtti.Funcs.Editor
 
         private long _updatedAt = long.MinValue;
 
-        private void DrawSampledValue(string key, string value)
+        private void DrawSampledValue(string key, SampledValue value)
         {
             GUILayout.Label(key);
+            DrawField("Value", value.Value.ToString());
+            DrawField(
+                "Updated",
+                new DateTime(value.Time)
+                    .ToLocalTime()
+                    .ToString("HH:mm:ss.fffffff")
+            );
+            DrawField(
+                "Frame",
+                value.Frame.ToString()
+            );
+            EditorGUILayout.Space();
+        }
+
+        private void DrawField(string label, string value)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(
+                label,
+                GUILayout.Width(EditorGUIUtility.labelWidth - 4)
+            );
             EditorGUILayout.SelectableLabel(
                 value,
                 EditorStyles.textField,
                 GUILayout.Height(EditorGUIUtility.singleLineHeight)
             );
-            EditorGUILayout.Space();
+            EditorGUILayout.EndHorizontal();
         }
 
         private void OnGUI()
@@ -51,11 +72,17 @@ namespace mtti.Funcs.Editor
             );
             EditorGUILayout.Space();
 
+            EditorGUILayout.HelpBox(
+                "Call mtti.Funcs.DebugUtils.Sample(...) to output values here.",
+                MessageType.Info
+            );
+            EditorGUILayout.Space();
+
             for (int i = 0, count = _keys.Count; i < count; i++)
             {
                 DrawSampledValue(
                     _keys[i],
-                    DebugUtils.SampledValues.GetLast(_keys[i]).Value.ToString()
+                    DebugUtils.SampledValues.GetLast(_keys[i])
                 );
             }
 
