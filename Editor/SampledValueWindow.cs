@@ -39,8 +39,18 @@ namespace mtti.Funcs.Editor
                 "Frame",
                 value.Frame.ToString()
             );
+
+            if (value.Repeats > 0)
+            {
+                DrawField(
+                    "Repeats",
+                    value.Repeats.ToString()
+                );
+            }
+
             EditorGUILayout.Space();
         }
+
 
         private void DrawField(string label, string value)
         {

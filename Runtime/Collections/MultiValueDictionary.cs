@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 
 namespace mtti.Funcs.Collections
@@ -131,6 +132,22 @@ namespace mtti.Funcs.Collections
             return result;
         }
 
+        public ValueT Get(KeyT key, int index)
+        {
+            if (!_index.ContainsKey(key))
+            {
+                throw new ArgumentOutOfRangeException("key");
+            }
+
+            var items = _index[key];
+            if (index < 0 || index >= items.Count)
+            {
+                throw new ArgumentOutOfRangeException("index");
+            }
+
+            return items[index];
+        }
+
         public ValueT GetFirst(KeyT key)
         {
             ValueT result;
@@ -234,6 +251,22 @@ namespace mtti.Funcs.Collections
         {
             if (!_index.ContainsKey(key)) return;
             _index[key].RemoveAt(index);
+        }
+
+        public void Set(KeyT key, int index, ValueT value)
+        {
+            if (!_index.ContainsKey(key))
+            {
+                throw new ArgumentOutOfRangeException("key");
+            }
+
+            var items = _index[key];
+            if (index < 0 || index >= items.Count)
+            {
+                throw new ArgumentOutOfRangeException("index");
+            }
+
+            items[index] = value;
         }
 
         public int GetAll(ICollection<ValueT> result)

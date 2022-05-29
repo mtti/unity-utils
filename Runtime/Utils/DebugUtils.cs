@@ -7,17 +7,25 @@ namespace mtti.Funcs
 {
     public struct SampledValue
     {
+        public static SampledValue CreateRepeated(SampledValue original)
+        {
+            return new SampledValue(original.Value, original.Repeats + 1);
+        }
+
         public readonly long Time;
 
         public readonly int Frame;
 
         public readonly object Value;
 
-        public SampledValue(object value)
+        public readonly int Repeats;
+
+        public SampledValue(object value, int repeats = 0)
         {
             Time = DateTime.UtcNow.Ticks;
             Frame = UnityEngine.Time.frameCount;
             Value = value;
+            Repeats = repeats;
         }
     }
 
@@ -47,6 +55,27 @@ namespace mtti.Funcs
 
         public static void Sample(string id, object value)
         {
+            // Check for repeats
+            var existingCount = s_values.Count(id);
+            if (existingCount > 0)
+            {
+                var lastIndex = existingCount - 1;
+                var last = s_values.GetLast(id);
+
+                var bothNull = value == null && last.Value == null;
+                var areEqual = value != null && value.Equals(last.Value);
+
+                if (bothNull || areEqual)
+                {
+                    s_values.Set(
+                        id,
+                        lastIndex,
+                        SampledValue.CreateRepeated(last)
+                    );
+                    return;
+                }
+            }
+
             s_values.Add(id, new SampledValue(value));
             if (s_values.Count(id) > 256) s_values.RemoveAt(id, 0);
 
