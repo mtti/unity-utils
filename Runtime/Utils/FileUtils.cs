@@ -79,6 +79,28 @@ namespace mtti.Funcs
             }
         }
 
+        /// <summary>
+        /// Get the "wide" file extension of a path.
+        ///
+        /// In other words, for <c>hello.world.txt</c> return <c>.world.txt</c>
+        /// and not <c>.txt</c> like FileInfo.Extension does.
+        /// </summary>
+        public static string GetWideExtension(string fileName)
+        {
+            int startIndex = 0;
+            if (fileName.StartsWith('.')) startIndex = 1;
+
+            var dotIndex = fileName.IndexOf('.', startIndex);
+            if (dotIndex == -1) return null;
+
+            return fileName.Substring(dotIndex);
+        }
+
+        public static string GetWideExtension(FileInfo fileInfo)
+        {
+            return GetWideExtension(fileInfo.Name);
+        }
+
         public static string[] SplitPath(string path)
         {
             return SplitPath(path, Path.DirectorySeparatorChar);
