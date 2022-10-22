@@ -1,5 +1,5 @@
 /*
-Copyright 2017-2020 Matti Hiltunen
+Copyright 2017-2022 Matti Hiltunen
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@ using IEnumerator = System.Collections.IEnumerator;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+#if USE_UNITASK
+using Cysharp.Threading.Tasks;
+#endif
+
 namespace mtti.Funcs
 {
     /// <summary>
@@ -28,6 +32,8 @@ namespace mtti.Funcs
     public static class UnityUtils
     {
         private static List<GameObject> s_gameObjects = new List<GameObject>();
+
+        private static HashSet<string> s_scenesBeingLoaded;
 
         /// <summary>
         /// Check if project is currently in the Unity Editor and not playing. Also callable during
@@ -272,6 +278,50 @@ namespace mtti.Funcs
                 );
             }
         }
+
+#if USE_UNITASK
+        public static async UniTask<Scene> LoadSceneAsync(string scenePath)
+        {
+            if (s_scenesBeingLoaded == null)
+            {
+                s_scenesBeingLoaded = new HashSet<string>();
+            }
+
+            // If the scene is already being loaded, wait until the scene is
+            // loaded.
+            while (s_scenesBeingLoaded.Contains(scenePath))
+            {
+                await UniTask.NextFrame();
+            }
+
+            Scene result;
+
+            // Return the scene if it's already loaded.
+            if (UnityUtils.GetLoadedScene(scenePath, out result))
+            {
+                return result;
+            }
+
+            s_scenesBeingLoaded.Add(scenePath);
+            try
+            {
+                await SceneManager.LoadSceneAsync(
+                    scenePath,
+                    LoadSceneMode.Additive
+                );
+                if (!UnityUtils.GetLoadedScene(scenePath, out result))
+                {
+                    throw new Exception($"Unable to find loaded scene: {scenePath}");
+                }
+            }
+            finally
+            {
+                s_scenesBeingLoaded.Remove(scenePath);
+            }
+
+            return result;
+        }
+#endif
 
         /// <summary>
         /// Recursively set the layer of a GameObject and all it's children.
