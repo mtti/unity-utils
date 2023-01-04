@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using mtti.Funcs.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -214,7 +215,16 @@ namespace mtti.Funcs
         /// <summary>
         /// Copy mesh data to a <see cref="UnityEngine.Mesh" />.
         /// </summary>
+        [Obsolete("Use CopyTo instead")]
         public void Copy(Mesh target)
+        {
+            CopyTo(target);
+        }
+
+        /// <summary>
+        /// Copy mesh data to a <see cref="UnityEngine.Mesh" />.
+        /// </summary>
+        public void CopyTo(Mesh target)
         {
             target.SetVertices(Vertices);
             target.SetTriangles(Triangles, 0);
