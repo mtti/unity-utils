@@ -14,10 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using mtti.Funcs.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-using mtti.Funcs.Collections;
 
 namespace mtti.Funcs
 {
@@ -34,7 +33,28 @@ namespace mtti.Funcs
 
         private static Dictionary<Vector2Int, int> s_newVertices;
 
-        private static void AddEdge(int first, int second)
+        public List<Vector3> Normals = new();
+
+        public List<int> Triangles = new();
+
+        public List<Vector2> UVs = new();
+
+        public List<Vector3> Vertices = new();
+
+        public int VertexCount
+        {
+            get { return Vertices.Count; }
+        }
+
+        public int TriangleCount
+        {
+            get { return Triangles.Count / 3; }
+        }
+
+        private static void AddEdge(
+            int first,
+            int second
+        )
         {
             int smaller = first;
             int larger = second;
@@ -48,29 +68,15 @@ namespace mtti.Funcs
             s_edgeSet.Add(new Vector2Int(smaller, larger));
         }
 
-        private static void AddNewTriangle(int first, int second, int third)
+        private static void AddNewTriangle(
+            int first,
+            int second,
+            int third
+        )
         {
             s_newTriangles.Add(first);
             s_newTriangles.Add(second);
             s_newTriangles.Add(third);
-        }
-
-        public List<Vector3> Vertices = new List<Vector3>();
-
-        public List<int> Triangles = new List<int>();
-
-        public List<Vector3> Normals = new List<Vector3>();
-
-        public List<Vector2> UVs = new List<Vector2>();
-
-        public int VertexCount
-        {
-            get { return Vertices.Count; }
-        }
-
-        public int TriangleCount
-        {
-            get { return Triangles.Count / 3; }
         }
 
         /// <summary>
@@ -160,11 +166,12 @@ namespace mtti.Funcs
                 {
                     s_edges.Add(edge);
                 }
+
                 new0 = s_newVertices[s_edges[0]];
                 new1 = s_newVertices[s_edges[1]];
                 new2 = s_newVertices[s_edges[2]];
 
-                /// Create the new sub-triangles
+                // Create the new sub-triangles
                 AddNewTriangle(old0, new0, new1);
                 AddNewTriangle(old1, new2, new0);
                 AddNewTriangle(new0, new2, new1);
@@ -177,6 +184,7 @@ namespace mtti.Funcs
             {
                 Triangles.Capacity = s_newTriangles.Count;
             }
+
             for (int i = 0, count = s_newTriangles.Count; i < count; i++)
             {
                 Triangles.Add(s_newTriangles[i]);
@@ -243,7 +251,10 @@ namespace mtti.Funcs
         /// <summary>
         /// Find vertex index pairs representing all the edges of a triangle.
         /// </summary>
-        public int FindEdges(int triangle, List<Vector2Int> result)
+        public int FindEdges(
+            int triangle,
+            List<Vector2Int> result
+        )
         {
             FindEdges(triangle);
 
