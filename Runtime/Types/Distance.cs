@@ -19,9 +19,9 @@ using System;
 namespace mtti.Funcs
 {
     /// <summary>
-    /// Value type representing speed. The value is stored internally as
-    /// meters per second and methods are provided for the most common
-    /// conversions. Equality uses an approximate comparison.
+    /// Value type representing distance. The value is stored internally as
+    /// meters and methods are provided for the most common conversions.
+    /// Equality uses an approximate comparison.
     /// </summary>
     public struct Distance : IEquatable<Distance>, IComparable<Distance>
     {
@@ -114,8 +114,11 @@ namespace mtti.Funcs
 
         public override bool Equals(object other)
         {
-            if (!(other is Distance)) return false;
-            var distance = (Distance)other;
+            if (!(other is Distance))
+            {
+                return false;
+            }
+            Distance distance = (Distance)other;
             return Equals(distance);
         }
 
