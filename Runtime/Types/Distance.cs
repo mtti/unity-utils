@@ -1,5 +1,5 @@
 /*
-Copyright 2017-2021 Matti Hiltunen
+Copyright 2017-2023 Matti Hiltunen
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace mtti.Funcs
 
         public const float MilesToMeters = 1609.0f;
 
-        public const float Meters2Feet = 3.281f;
+        public const float InchesToMeters = 0.0254f;
 
         public static Distance operator +(
             Distance lhs,
@@ -73,13 +73,18 @@ namespace mtti.Funcs
             return new Distance(value * MilesToMeters);
         }
 
+        public static Distance FromInches(float value)
+        {
+            return new Distance(value * InchesToMeters);
+        }
+
         /// <summary>
-        /// Value as meters per second.
+        /// Value in meters.
         /// </summary>
         public readonly float AsMeters;
 
         /// <summary>
-        /// Value as kilometers per hour.
+        /// Value in kilometers.
         /// </summary>
         public float AsKilometers
         {
@@ -87,7 +92,7 @@ namespace mtti.Funcs
         }
 
         /// <summary>
-        /// Value as miles per hour.
+        /// Approximate value in miles.
         /// </summary>
         public float AsMiles
         {
@@ -99,7 +104,15 @@ namespace mtti.Funcs
         /// </summary>
         public float AsFeet
         {
-            get { return AsMeters * Meters2Feet; }
+            get { return AsInches / 12.0f; }
+        }
+
+        /// <summary>
+        /// Approximate value in inches.
+        /// </summary>
+        public float AsInches
+        {
+            get { return AsMeters / InchesToMeters; }
         }
 
         public Distance(float metersPerSecond)
@@ -131,6 +144,11 @@ namespace mtti.Funcs
         public override int GetHashCode()
         {
             return AsMeters.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return $"{AsMeters} m";
         }
     }
 }
