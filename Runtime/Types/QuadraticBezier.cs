@@ -23,29 +23,27 @@ namespace mtti.Funcs.Types
     /// <summary>
     /// A quadratic bezier curve.
     /// </summary>
+    [Serializable]
     public struct QuadraticBezier
     {
-        /// <summary>
-        /// Calculate position of a point along a quadratic bezier curve.
-        /// </summary>
-        /// <param name="start">Starting point</param>
-        /// <param name="control">Control point</param>
-        /// <param name="end">Ending point</param>
-        public static Vector3 GetPoint(
+        [SerializeField]
+        private Vector3 _control;
+
+        [SerializeField]
+        private Vector3 _end;
+
+        [SerializeField]
+        private Vector3 _start;
+
+        public QuadraticBezier(
             Vector3 start,
             Vector3 control,
-            Vector3 end,
-            float t
+            Vector3 end
         )
         {
-            var q0 = Vector3.Lerp(start, control, t);
-            var q1 = Vector3.Lerp(control, end, t);
-            return Vector3.Lerp(q0, q1, t);
-        }
-
-        public static float GetSegmentLength(int segmentCount)
-        {
-            return 1.0f / segmentCount;
+            _start = start;
+            _control = control;
+            _end = end;
         }
 
         /// <summary>
@@ -72,24 +70,27 @@ namespace mtti.Funcs.Types
             get { return _end; }
         }
 
-        [SerializeField]
-        private readonly Vector3 _start;
-
-        [SerializeField]
-        private readonly Vector3 _control;
-
-        [SerializeField]
-        private readonly Vector3 _end;
-
-        public QuadraticBezier(
+        /// <summary>
+        /// Calculate position of a point along a quadratic bezier curve.
+        /// </summary>
+        /// <param name="start">Starting point</param>
+        /// <param name="control">Control point</param>
+        /// <param name="end">Ending point</param>
+        public static Vector3 GetPoint(
             Vector3 start,
             Vector3 control,
-            Vector3 end
+            Vector3 end,
+            float t
         )
         {
-            _start = start;
-            _control = control;
-            _end = end;
+            Vector3 q0 = Vector3.Lerp(start, control, t);
+            Vector3 q1 = Vector3.Lerp(control, end, t);
+            return Vector3.Lerp(q0, q1, t);
+        }
+
+        public static float GetSegmentLength(int segmentCount)
+        {
+            return 1.0f / segmentCount;
         }
 
         /// <summary>
@@ -134,8 +135,8 @@ namespace mtti.Funcs.Types
                 );
             }
 
-            var segmentLength = GetSegmentLength(resolution);
-            for (var i = 0; i < resolution; i++)
+            float segmentLength = GetSegmentLength(resolution);
+            for (int i = 0; i < resolution; i++)
             {
                 result[i] = GetPoint(segmentLength * i);
             }
@@ -146,8 +147,8 @@ namespace mtti.Funcs.Types
             int resolution
         )
         {
-            var segmentLength = GetSegmentLength(resolution);
-            for (var i = 0; i < resolution; i++)
+            float segmentLength = GetSegmentLength(resolution);
+            for (int i = 0; i < resolution; i++)
             {
                 result.Add(GetPoint(segmentLength * i));
             }
@@ -183,12 +184,12 @@ namespace mtti.Funcs.Types
                 );
             }
 
-            var segmentLength = GetSegmentLength(resolution);
+            float segmentLength = GetSegmentLength(resolution);
 
             // Calculate points
-            for (var i = 0; i < resolution; i++)
+            for (int i = 0; i < resolution; i++)
             {
-                var t = segmentLength * i;
+                float t = segmentLength * i;
                 result[i] = new Ray(GetPoint(t), Vector3.zero);
             }
 
@@ -196,12 +197,12 @@ namespace mtti.Funcs.Types
             Vector3 next;
 
             // Calculate directions, except for the last point
-            for (var i = 0; i < resolution - 1; i++)
+            for (int i = 0; i < resolution - 1; i++)
             {
                 current = result[i].origin;
                 next = result[i + 1].origin;
 
-                var dirToNext = next - current;
+                Vector3 dirToNext = next - current;
                 result[i] = new Ray(
                     current,
                     next - current
@@ -210,7 +211,7 @@ namespace mtti.Funcs.Types
 
             // Direction for the last point isn't really definable, so we'll
             // use the same direction as for the one before it.
-            var ilast = resolution - 1;
+            int ilast = resolution - 1;
             result[ilast] = new Ray(
                 result[ilast].origin,
                 result[ilast - 1].direction
@@ -236,20 +237,20 @@ namespace mtti.Funcs.Types
 
             result.Clear();
 
-            var segmentLength = GetSegmentLength(resolution);
+            float segmentLength = GetSegmentLength(resolution);
 
             // Calculate points
-            for (var i = 0; i < resolution; i++)
+            for (int i = 0; i < resolution; i++)
             {
-                var t = segmentLength * i;
+                float t = segmentLength * i;
                 result.Add(new Ray(GetPoint(t), Vector3.zero));
             }
 
             // Calculate directions, except for the last point
-            for (var i = 0; i < resolution - 1; i++)
+            for (int i = 0; i < resolution - 1; i++)
             {
-                var current = result[i].origin;
-                var next = result[i + 1].origin;
+                Vector3 current = result[i].origin;
+                Vector3 next = result[i + 1].origin;
 
                 result[i] = new Ray(
                     current,
@@ -259,7 +260,7 @@ namespace mtti.Funcs.Types
 
             // Direction for the last point isn't really definable, so we'll
             // use the same direction as for the one before it.
-            var ilast = resolution - 1;
+            int ilast = resolution - 1;
             result[ilast] = new Ray(
                 result[ilast].origin,
                 result[ilast - 1].direction
@@ -268,13 +269,13 @@ namespace mtti.Funcs.Types
 
         public float EstimateLength(int resolution = 3)
         {
-            var length = 0.0f;
-            var segmentLength = GetSegmentLength(resolution);
-            var previousPoint = _start;
+            float length = 0.0f;
+            float segmentLength = GetSegmentLength(resolution);
+            Vector3 previousPoint = _start;
 
-            for (var i = 0; i < resolution; i++)
+            for (int i = 0; i < resolution; i++)
             {
-                var currentPoint = GetPoint(segmentLength * i);
+                Vector3 currentPoint = GetPoint(segmentLength * i);
                 length += Vector3.Distance(previousPoint, currentPoint);
 
                 previousPoint = currentPoint;
@@ -293,9 +294,9 @@ namespace mtti.Funcs.Types
             QuadraticBezier[] result
         )
         {
-            var q0 = Vector3.Lerp(_start, _control, t);
-            var q1 = Vector3.Lerp(_control, _end, t);
-            var b = Vector3.Lerp(q0, q1, t);
+            Vector3 q0 = Vector3.Lerp(_start, _control, t);
+            Vector3 q1 = Vector3.Lerp(_control, _end, t);
+            Vector3 b = Vector3.Lerp(q0, q1, t);
             result[0] = new QuadraticBezier(_start, q0, b);
             result[1] = new QuadraticBezier(b, q1, _end);
         }
