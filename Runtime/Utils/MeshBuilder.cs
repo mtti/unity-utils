@@ -210,6 +210,7 @@ namespace mtti.Funcs
             Vertices.Clear();
             Triangles.Clear();
             Normals.Clear();
+            UVs.Clear();
         }
 
         /// <summary>
