@@ -80,6 +80,17 @@ namespace mtti.Funcs
             s_newTriangles.Add(third);
         }
 
+        public void AddTriangle(
+            int a,
+            int b,
+            int c
+        )
+        {
+            Triangles.Add(a);
+            Triangles.Add(b);
+            Triangles.Add(c);
+        }
+
         /// <summary>
         /// Calculate vertex normals using a spherical projection from the mesh
         /// origin.
