@@ -1,5 +1,5 @@
 /*
-Copyright 2017-2022 Matti Hiltunen
+Copyright 2017-2023 Matti Hiltunen
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -347,6 +347,16 @@ namespace mtti.Funcs
         public static Vector3 GetCentroid(Vector3 a, Vector3 b, Vector3 c)
         {
             return (a + b + c) / 3.0f;
+        }
+
+        /// <summary>
+        /// Check if an integer is a power of two.
+        /// </summary>
+        /// <param name="value">The value to check</param>
+        /// <returns><c>true</c> if <c>value</c> is a power of two, otherwise <c>false</c></returns>
+        public static bool IsPowerOfTwo(int value)
+        {
+            return (value & (value - 1)) != 0;
         }
     }
 }
