@@ -1,9 +1,9 @@
 {
-  "name": "com.mattihiltunen.funcs",
+  "name": "com.mattihiltunen.utils",
   "version": "1.0.0",
-  "displayName": "mtti.Funcs",
-  "description": "Small utility functions for Unity",
-  "unity": "2019.4",
+  "displayName": "mtti.Utils",
+  "description": "Reusable Unity utilities",
+  "unity": "2021.3",
   "author": {
     "name": "Matti Hiltunen",
     "url": "https://www.mattihiltunen.com"
