@@ -3,7 +3,6 @@ using System;
 
 namespace mtti.Pools
 {
-#if USE_MTTI_FUNCS
     public class PooledMeshBuilder : MeshBuilder, IDisposable
     {
         public void Dispose()
@@ -17,5 +16,4 @@ namespace mtti.Pools
             return ObjectPool<PooledMeshBuilder>.Instance.Claim();
         }
     }
-#endif
 }
