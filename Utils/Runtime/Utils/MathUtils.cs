@@ -65,6 +65,32 @@ namespace mtti.Funcs
             return ((1.0f - t) * a) + (b * t);
         }
 
+        /// <summary>
+        /// Calculate <c>value</c> to the power of <c>power</c>
+        /// as a <c>long</c>.
+        /// </summary>
+        public static long Pow(
+            long value,
+            int power
+        )
+        {
+            if (power < 1)
+            {
+                throw new ArgumentException(
+                    "Power must be greater than 0",
+                    nameof(power)
+                );
+            }
+
+            long result = 1;
+            for (int i = 0; i < power; i++)
+            {
+                result *= value;
+            }
+
+            return result;
+        }
+
         public static float Remap(
             float value,
             float minFrom,
