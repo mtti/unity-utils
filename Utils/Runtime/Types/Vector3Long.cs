@@ -60,7 +60,7 @@ namespace mtti.Funcs.Types
 
         #region Statics
 
-        public static Vector3Long Zero = new Vector3Long(0, 0, 0);
+        public static Vector3Long Zero = new Vector3Long(0);
 
         #endregion
 
@@ -97,6 +97,16 @@ namespace mtti.Funcs.Types
             _x = x;
             _y = y;
             _z = z;
+        }
+
+        /// <summary>
+        /// Create a new <c>Vector3Long</c> with all axes set to the same value.
+        /// </summary>
+        public Vector3Long(long value)
+        {
+            _x = value;
+            _y = value;
+            _z = value;
         }
 
         public override bool Equals(object other)

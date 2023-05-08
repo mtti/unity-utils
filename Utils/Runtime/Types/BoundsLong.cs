@@ -8,7 +8,7 @@ namespace mtti.Funcs.Types
     /// integers.
     /// </summary>
     [Serializable]
-    public struct BoundsLong: IEquatable<BoundsLong>
+    public struct BoundsLong : IEquatable<BoundsLong>
     {
         [SerializeField]
         private Vector3Long _center;
@@ -20,12 +20,12 @@ namespace mtti.Funcs.Types
         {
             get { return _center; }
         }
-        
+
         public Vector3Long Size
         {
             get { return _size; }
         }
-        
+
         public Vector3Long Min
         {
             get
@@ -33,7 +33,7 @@ namespace mtti.Funcs.Types
                 var halfX = _size.X / 2;
                 var halfY = _size.Y / 2;
                 var halfZ = _size.Z / 2;
-                
+
                 return new Vector3Long(
                     _center.X - halfX,
                     _center.Y - halfY,
@@ -49,7 +49,7 @@ namespace mtti.Funcs.Types
                 var halfX = _size.X / 2;
                 var halfY = _size.Y / 2;
                 var halfZ = _size.Z / 2;
-                
+
                 return new Vector3Long(
                     _center.X + halfX,
                     _center.Y + halfY,
@@ -57,7 +57,7 @@ namespace mtti.Funcs.Types
                 );
             }
         }
-        
+
         public BoundsLong(
             Vector3Long center,
             Vector3Long size
@@ -78,6 +78,14 @@ namespace mtti.Funcs.Types
             return point.X >= min.X && point.X < max.X
                 && point.Y >= min.Y && point.Y < max.Y
                 && point.Z >= min.Z && point.Z < max.Z;
+        }
+
+        /// <summary>
+        /// Check if another bounding box is container entirely within this one.
+        /// </summary>
+        public bool Contains(BoundsLong other)
+        {
+            return Contains(other.Min) && Contains(other.Max);
         }
 
         public bool Equals(BoundsLong other)
