@@ -2,6 +2,10 @@
 
 A collection of reusable utilities for my Unity projects.
 
+Be warned that while I make this repo available publicly in the hopes it will be
+useful for someone, it's intended for my own use and as such anything can be
+added or removed arbitrarily and anything can break or be broken at any time.
+
 ## Installation
 
 ## As a Git dependency
@@ -18,4 +22,5 @@ Add to `manifest.json`, under `dependencies`:
 git submodule add git@github.com:mtti/unity-utils.git Packages/com.mattihiltunen.utils
 ```
 
-You can also add the `manifest.json` entry as above to document the dependency to this library.
+You can also add the `manifest.json` entry as above to document the dependency
+to this library.
