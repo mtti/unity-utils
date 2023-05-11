@@ -88,6 +88,29 @@ namespace mtti.Funcs.Types
             get { return _z; }
         }
 
+        public long SquareMagnitude
+        {
+            get { return (_x * _x) + (_y * _y) + (_z * _z); }
+        }
+
+        public double Magnitude
+        {
+            get { return Math.Sqrt(SquareMagnitude); }
+        }
+
+        public Vector3 Normalized
+        {
+            get
+            {
+                var magnitude = Magnitude;
+                return new Vector3(
+                    (float)((double)_x / magnitude),
+                    (float)((double)_y / magnitude),
+                    (float)((double)_z / magnitude)
+                );
+            }
+        }
+
         public Vector3Long(
             long x,
             long y,
