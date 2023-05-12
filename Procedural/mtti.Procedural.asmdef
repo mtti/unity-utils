@@ -1,0 +1,22 @@
+{
+    "name": "mtti.Procedural",
+    "rootNamespace": "mtti.Procedural",
+    "references": [
+        "GUID:e0cd26848372d4e5c891c569017e11f1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.collections",
+            "expression": "1.1.0",
+            "define": "USE_NATIVE_COLLECTIONS"
+        }
+    ],
+    "noEngineReferences": false
+}
